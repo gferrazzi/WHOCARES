@@ -1,7 +1,7 @@
 % Giulio Ferrazzi, December 2021
 % WHOCARES: Data-driven WHOle-brain CArdiac signal REgression from highly Sampled fMRI acquisitions by Nigel Colenbier, Marco Marino, Giorgio Arcara, Blaise Frederick, Giovanni Pellegrino, Daniele Marinazzo, Giulio Ferrazzi - submitted manuscript
 
-% Main WHOCARES, computes regressor and mutual information map, loop over subjects
+% Main WHOCARES, computes regressor and mutual information map, loops over subjects
 
 warning off
 clear all; close all; clc
