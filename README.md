@@ -23,10 +23,15 @@ slice sorted averaging and a deep learning reconstruction filter. Neuroimage 198
 
 3. from Matlab, run main_WHOCARES.m
 
-OUTPUT: fMRI pre-processed data (Figure 1, step 1 in the paper) in @WHOCARES/processing/$SUBJECT/PROCESSED/WHOCARES/data_detrend.nii.gz
-cardiac regressor in @WHOCARES/processing/$SUBJECT/PROCESSED/WHOCARES/regressor.nii.gz 
-fMRI corrected time-series in @WHOCARES/processing/$SUBJECT/PROCESSED/WHOCARES/regressor_out.nii.gz 
-mutual information map in @WHOCARES/processing/$SUBJECT/PROCESSED/WHOCARES/MI.nii
+OUTPUT: 
+
+1) fMRI pre-processed data in @WHOCARES/processing/$SUBJECT/PROCESSED/WHOCARES/data_detrend.nii.gz
+
+2) cardiac regressor in @WHOCARES/processing/$SUBJECT/PROCESSED/WHOCARES/regressor.nii.gz 
+
+3) fMRI corrected time-series in @WHOCARES/processing/$SUBJECT/PROCESSED/WHOCARES/regressor_out.nii.gz 
+
+4) mutual information map in @WHOCARES/processing/$SUBJECT/PROCESSED/WHOCARES/MI.nii
 
 4. if you want to clear everything at any time and start from scratch, run clear_all.sh
 
