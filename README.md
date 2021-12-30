@@ -2,7 +2,9 @@ Code to perform data-driven cardiac signal regression from fMRI time-series as d
 
 WHOCARES: Data-driven WHOle-brain CArdiac signal REgression from highly Sampled fMRI acquisitions by Nigel Colenbier, Marco Marino, Giorgio Arcara, Blaise Frederick, Giovanni Pellegrino, Daniele Marinazzo, Giulio Ferrazzi - submitted manuscript
 
-The package contains various (open source) toolboxes and Matlab functions. It requires FSL (https://fsl.fmrib.ox.ac.uk/fsl/fslwiki) and the happy toolbox (https://rapidtide.readthedocs.io/en/latest/index.html) installed (docker)
+The package contains various (open source) toolboxes and Matlab functions. It requires FSL (https://fsl.fmrib.ox.ac.uk/fsl/fslwiki) and the happy toolbox (https://rapidtide.readthedocs.io/en/latest/index.html) installed (through docker)
+
+It also requires the gcmi package, which can be cloned from here (https://github.com/robince/gcmi) and should be saved into /packages or included into your Matlab path
 
 Clone the repo onto your Linux distribution and run (in order) the following:
 
@@ -14,7 +16,7 @@ ps: subject 901442 corresponds to Figure 2, top left in the paper
 
 2. from terminal: source happy_script.sh
 
-this bash script runs the happy pipeline to extract PPG/EEG-like signals from the fMRI data. For more information please refer to:
+this bash script runs the happy pipeline to extract PPG/EEG-like signals from fMRI data. For more information please refer to:
 
 Aslan, S., Hocke, L., Schwarz, N., Frederick, B., 2019. Extraction of the cardiac waveform from simultaneous multislice fMRI data using
 slice sorted averaging and a deep learning reconstruction filter. Neuroimage 198, 303-316
