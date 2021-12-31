@@ -1,7 +1,7 @@
 function bpm = get_bpm(input_data)
 
 % Giulio Ferrazzi, December 2021
-% WHOCARES: Data-driven WHOle-brain CArdiac signal REgression from highly Sampled fMRI acquisitions by Nigel Colenbier, Marco Marino, Giorgio Arcara, Blaise Frederick, Giovanni Pellegrino, Daniele Marinazzo, Giulio Ferrazzi - submitted manuscript
+% WHOCARES: Data-driven WHOle-brain CArdiac signal REgression from highly accelerated simultaneous multi-Slice fMRI acquisitions by Nigel Colenbier, Marco Marino, Giorgio Arcara, Blaise Frederick, Giovanni Pellegrino, Daniele Marinazzo, Giulio Ferrazzi - submitted manuscript
 
 % average bpm from happy cardiac segment
 

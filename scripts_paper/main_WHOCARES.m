@@ -1,7 +1,7 @@
 % Giulio Ferrazzi, December 2021
-% WHOCARES: Data-driven WHOle-brain CArdiac signal REgression from highly Sampled fMRI acquisitions by Nigel Colenbier, Marco Marino, Giorgio Arcara, Blaise Frederick, Giovanni Pellegrino, Daniele Marinazzo, Giulio Ferrazzi - submitted manuscript
+% WHOCARES: Data-driven WHOle-brain CArdiac signal REgression from highly accelerated simultaneous multi-Slice fMRI acquisitions by Nigel Colenbier, Marco Marino, Giorgio Arcara, Blaise Frederick, Giovanni Pellegrino, Daniele Marinazzo, Giulio Ferrazzi - submitted manuscript
 
-% Main WHOCARES, computes regressor and mutual information map, loops over subjects
+% Main WHOCARES, computes cardiac regressor and mutual information map, loops over subjects
 
 warning off
 clear all; close all; clc
@@ -22,8 +22,8 @@ Z=72;          % number of slices
 MB=8;          % multiband factor
 sizeData=1200; % number of volumes
 FW=0.2;        % width of the temporal filter (Hz)
-NW=20;         % number of frames per segment (in TRs). Note that W in the paper is NW*(Z/MB) = 180
-T=0;           % overlapping factor for segments, not tested, i.e. T=0 with no overlap
+NW=20;         % number of frames per segment (in TRs). Note that the W parameter in the paper is NW*(Z/MB) = 180
+T=0;           % overlapping number of frames in successive segments, not tested, i.e. T=0 with no overlap
 
 %% LOOP OVER SUBJECTS
 for sub = 1 : SUB
@@ -45,6 +45,9 @@ for sub = 1 : SUB
     stringMask = 'brain_mask.nii';
     stringDataHappy = 'happy/fmri_normcardfromfmri_dlfiltered_25.0Hz.txt';
     
+    data_container = load_untouch_nii(stringMask); mask = data_container.img;
+    [X, Y, Z] = size(mask);
+    
     %% ESTIMATING AVERAGE HR PER SEGMENTS
     cardiac_signal = importdata(stringDataHappy);
     cardiac_signal = rest_IdealFilter(cardiac_signal, 1/25, [25/60; 150/60]); 
@@ -64,21 +67,28 @@ for sub = 1 : SUB
     bpm_iter = f_y;
     
     %% WHOCARES PIPELINE
-    regressor = WHOCARES_pipeline( stringData, stringMask, TR, MB, FW, NW, T, bpm_iter);
+    [data_detrend, regressor] = WHOCARES_pipeline(stringData, stringMask, TR, MB, FW, NW, T, bpm_iter);
 
-    %% CALCULATE MUTUAL INFORMATION  
-    data_container = load_untouch_nii(stringMask); mask = data_container.img;
-    [X, Y, Z] = size(mask);
+    data_detrend(isnan(data_detrend)) = 0;
+    data_detrend(isinf(data_detrend)) = 0;
+    data_container.img = data_detrend;
+    data_container.hdr.dime.dim(5) = sizeData;
+    save_untouch_nii(data_container,'data_detrend.nii')
     
-    data_container = load_untouch_nii('data_detrend.nii'); data_detrend = double(data_container.img);
-    meanData = mean(data_detrend,4);
-    regressor_out = data_detrend-regressor;     
-    regressor_out = bsxfun(@plus,regressor_out, meanData);
-
-    data_container.img = regressor_out;
-    data_container.hdr.dime.dim(5) = size(regressor_out,4);
-    save_untouch_nii(data_container,'regressor_out.nii')
+    regressor(isnan(regressor)) = 0;
+    regressor(isinf(regressor)) = 0;
+    data_container.img = regressor;
+    data_container.hdr.dime.dim(5) = sizeData;
+    save_untouch_nii(data_container,'regressor.nii')
+     
+    meanData = mean(data_detrend, 4);
+    fMRI_corrected = data_detrend-regressor;     
+    fMRI_corrected = bsxfun(@plus,fMRI_corrected, meanData);
+    data_container.img = fMRI_corrected;
+    data_container.hdr.dime.dim(5) = sizeData;
+    save_untouch_nii(data_container,'fMRI_corrected.nii')
     
+    %% CALCULATE MUTUAL INFORMATION 
     ind=find(abs(mask));
     regressor = reshape(regressor,[],sizeData)';
     regressor=regressor(:,ind);
@@ -102,7 +112,7 @@ for sub = 1 : SUB
     
     %% ZIPPING BIG FILES TO SAVE SPACE
     system('gzip data_detrend.nii')
-    system('gzip regressor_out.nii')
+    system('gzip fMRI_corrected.nii')
     system('gzip regressor.nii')
     system(['gzip ' stringData])
 
