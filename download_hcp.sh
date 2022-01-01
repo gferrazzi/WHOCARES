@@ -1,4 +1,9 @@
 #!/bin/bash
+
+#this bash script downloads the data of one subject from the HCP project using AWS services (https://www.humanconnectome.org/study/hcp-young-adult/article/hcp-s1200-release-now-available-amazon-web-services). To download more subjects, append entries to file subject_list.txt
+
+#ps: subject chosen corresponds to Figure 2 (top left) in the paper
+
 subjectlist=subject_list.txt
 
 for subject in $(cat $subjectlist);

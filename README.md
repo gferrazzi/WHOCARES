@@ -23,7 +23,7 @@ slice sorted averaging and a deep learning reconstruction filter. Neuroimage 198
 
 Happy OUTPUT in @WHOCARES/processing/$SUBJECT/PROCESSED/WHOCARES/happy/
 
-3. from Matlab, run main_WHOCARES.m
+3. from Matlab, scripts_paper/run main_WHOCARES.m
 
 OUTPUT: 
 

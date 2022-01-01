@@ -1,4 +1,11 @@
 #!/bin/bash
+
+#This bash script runs the happy pipeline to extract PPG/EEG-like signals from the fMRI data. For more information please refer to:
+
+#Aslan, S., Hocke, L., Schwarz, N., Frederick, B., 2019. Extraction of the cardiac waveform from simultaneous multislice fMRI data using slice sorted averaging and a deep learning reconstruction filter. Neuroimage 198, 303-316
+
+#Happy OUTPUT in @WHOCARES/processing/$SUBJECT/PROCESSED/WHOCARES/happy/
+
 subjectlist=subject_list.txt
 
 for subject in $(cat $subjectlist);
