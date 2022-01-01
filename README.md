@@ -21,19 +21,19 @@ this bash script runs the happy pipeline to extract PPG/EEG-like signals from th
 Aslan, S., Hocke, L., Schwarz, N., Frederick, B., 2019. Extraction of the cardiac waveform from simultaneous multislice fMRI data using
 slice sorted averaging and a deep learning reconstruction filter. Neuroimage 198, 303-316
 
-Happy OUTPUT in @WHOCARES/processing/$SUBJECT/PROCESSED/WHOCARES/happy/
+Happy OUTPUT in @WHOCARES/processing/$subject/PROCESSED/WHOCARES/happy/
 
 3. from Matlab, scripts_paper/run main_WHOCARES.m
 
 OUTPUT: 
 
-	a) fMRI pre-processed data in @WHOCARES/processing/$SUBJECT/PROCESSED/WHOCARES/data_detrend.nii.gz
+	a) fMRI pre-processed data in @WHOCARES/processing/$subject/PROCESSED/WHOCARES/data_detrend.nii.gz
 
-	b) cardiac regressor in @WHOCARES/processing/$SUBJECT/PROCESSED/WHOCARES/regressor.nii.gz 
+	b) cardiac regressor in @WHOCARES/processing/$subject/PROCESSED/WHOCARES/regressor.nii.gz 
 
-	c) fMRI corrected time-series in @WHOCARES/processing/$SUBJECT/PROCESSED/WHOCARES/fMRI_corrected.nii.gz 
+	c) fMRI corrected time-series in @WHOCARES/processing/$subject/PROCESSED/WHOCARES/fMRI_corrected.nii.gz 
 
-	d) mutual information map in @WHOCARES/processing/$SUBJECT/PROCESSED/WHOCARES/MI.nii
+	d) mutual information map in @WHOCARES/processing/$subject/PROCESSED/WHOCARES/MI.nii
 
 4. if you want to clear everything and start from scratch, run clear_all.sh
 
