@@ -2,7 +2,11 @@ Code to perform data-driven cardiac signal regression from fMRI time-series as d
 
 WHOCARES: Data-driven WHOle-brain CArdiac signal REgression from highly accelerated simultaneous multi-Slice fMRI acquisitions by Nigel Colenbier, Marco Marino, Giorgio Arcara, Blaise Frederick, Giovanni Pellegrino, Daniele Marinazzo, Giulio Ferrazzi - submitted manuscript
 
-The package contains various (open source) toolboxes and Matlab functions. It requires FSL (https://fsl.fmrib.ox.ac.uk/fsl/fslwiki) and the happy toolbox (https://rapidtide.readthedocs.io/en/latest/index.html) installed (through docker)
+Pre-print available at https://arxiv.org/abs/2201.00744
+
+The package contains various (open source) toolboxes and Matlab functions. It requires FSL (https://fsl.fmrib.ox.ac.uk/fsl/fslwiki) and the happy toolbox (through docker). The documentation of the happy toolbox can be found at https://rapidtide.readthedocs.io/en/latest/index.html. The source code at https://github.com/bbfrederick/rapidtide.
+
+ (https://rapidtide.readthedocs.io/en/latest/index.html) installed (through docker)
 
 It also requires the gcmi package, which can be cloned from here (https://github.com/robince/gcmi) and should be saved into the /packages folder or included into your Matlab path
 
