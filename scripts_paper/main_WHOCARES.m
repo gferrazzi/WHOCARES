@@ -72,6 +72,7 @@ for sub = 1 : SUB
     data_detrend(isnan(data_detrend)) = 0;
     data_detrend(isinf(data_detrend)) = 0;
     data_container.img = data_detrend;
+    data_container.hdr.dime.dim(1) = 4;
     data_container.hdr.dime.dim(5) = sizeData;
     save_untouch_nii(data_container,'data_detrend.nii')
     
