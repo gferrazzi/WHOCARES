@@ -25,24 +25,24 @@ data_detrend = bsxfun(@times, data_detrend, mask);
 %% DETRENDING fMRI DATA with 3rd ORDER POLYNOMIA
 [X, Y, totZ, NV] = size(data_detrend);        
 opol = 3;
-for x = 1 : X 
-for y = 1 : Y
-    for z = 1 : totZ
-        voxel = squeeze(data_detrend(x,y,z,:));
-        [p,s,mu] = polyfit((1:NV)',voxel,opol);
-        f_y = polyval(p,(1:NV)',[],mu);
-        voxel = voxel-f_y+mean(voxel);
-        data_detrend(x,y,z,:) = reshape(voxel,[1 1 1 NV]);
-    end
-end
-end
+%for x = 1 : X 
+%for y = 1 : Y
+%    for z = 1 : totZ
+%        voxel = squeeze(data_detrend(x,y,z,:));
+%        [p,s,mu] = polyfit((1:NV)',voxel,opol);
+%        f_y = polyval(p,(1:NV)',[],mu);
+%        voxel = voxel-f_y+mean(voxel);
+%        data_detrend(x,y,z,:) = reshape(voxel,[1 1 1 NV]);
+%    end
+%end
+%end
 
 %% EXTRACTING CARDIAC SIGNAL
 numWindows = floor((size(data_detrend,4)-NW)/(NW-T)+1);
 regressor_output = [];
-for mbpack = 1 : MB      % for each block of slices
+for mbpack = 1 : MB      % for each block B
 
-data_toProcess = data_detrend(:,:,(totZ/MB)*(mbpack-1)+1:(totZ/MB)*(mbpack),:);    % select block
+data_toProcess = data_detrend(:,:,(totZ/MB)*(mbpack-1)+1:()*(mbpack),:);    % select block
 [~, ~, smallZ, ~] = size(data_toProcess);
 
 cardiac_regressor = zeros(X,Y,smallZ,NV,4);
@@ -60,7 +60,7 @@ for iter = 1:numWindows      % for each segment W
     data_smooth  = smooth_data_window(data_window,1);              % spatial smoothing
     data_smooth(isnan(data_smooth)) = 0;
    
-    regressor_chunk = cardiac_extraction(data_smooth,TR,1,bandpassNS,mask(:,:,(totZ/MB)*(mbpack-1)+1:(totZ/MB)*(mbpack)));    % extract cardiac_frequencies
+    regressor_chunk = cardiac_extraction(data_smooth,TR,1,bandpassNS,mask(:,:,MB*(mbpack-1)+1:MB*(mbpack)));    % extract cardiac_frequencies
 
     cardiac_regressor(:,:,:,start:start+(NW-T-1),:) = regressor_chunk(:,:,:,1:(NW-T),:);    % compound data
 

@@ -108,7 +108,7 @@ for sub = 1 : SUB
     MI_im = reshape(MI_im, [X Y Z]);
     
     data_container.hdr.dime.dim(5) = 1;
-    data_container.img = MI_im*100000;  % MI multiplied by 100000 to improve nifti dynamic range
+    data_container.img = MI_im*10000;  % MI multiplied by 10000 to improve nifti dynamic range
     save_untouch_nii(data_container,'MI.nii')
     
     %% ZIPPING BIG FILES TO SAVE SPACE
