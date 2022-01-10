@@ -62,9 +62,11 @@ for sub = 1 : SUB
         bpm_iter(iter)=BPM;
     end
     opol = 5;
+    tmp = bpm_iter;
+    bpm_iter = [bpm_iter(end:-1:1) bpm_iter bpm_iter(end:-1:1)];
     [p,s,mu] = polyfit((1:length(bpm_iter)),bpm_iter,opol);
     f_y = polyval(p,(1:length(bpm_iter)),[],mu);
-    bpm_iter = f_y;
+    bpm_iter = f_y(numWindows+1:2*numWindows);
     
     %% WHOCARES PIPELINE
     [data_detrend, regressor] = WHOCARES_pipeline(stringData, stringMask, TR, MB, FW, NW, T, bpm_iter);

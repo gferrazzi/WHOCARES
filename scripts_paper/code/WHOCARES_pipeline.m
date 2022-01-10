@@ -62,13 +62,13 @@ for iter = 1:numWindows      % for each segment W
    
     regressor_chunk = cardiac_extraction(data_smooth,TR,1,bandpassNS,mask(:,:,(totZ/MB)*(mbpack-1)+1:(totZ/MB)*(mbpack)));    % extract cardiac_frequencies
 
-    cardiac_regressor(:,:,:,start:start+(NW-T-1),:) = regressor_chunk(:,:,:,1:(NW-T),:);    % compound data
+    cardiac_regressor(:,:,:,start:stop,:) = regressor_chunk(:,:,:,1:(NW-T),:);    % compound data
 
 end
 
 %% ADD ANATOMY
 cardiac_regressor = bsxfun(@times, cardiac_regressor, mean(data_toProcess,4));        
-clear regressor_chunk; clear data_window; 
+clear regressor_chunk; clear data_window; clear data_smooth;
 [~,~,~,~,F] = size(cardiac_regressor);
 
 %% LINEAR FITTING
