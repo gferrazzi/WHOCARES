@@ -62,7 +62,6 @@ for sub = 1 : SUB
         bpm_iter(iter)=BPM;
     end
     opol = 5;
-    tmp = bpm_iter;
     bpm_iter = [bpm_iter(end:-1:1) bpm_iter bpm_iter(end:-1:1)];
     [p,s,mu] = polyfit((1:length(bpm_iter)),bpm_iter,opol);
     f_y = polyval(p,(1:length(bpm_iter)),[],mu);
