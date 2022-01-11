@@ -118,4 +118,6 @@ for sub = 1 : SUB
     system('gzip regressor.nii')
     system(['gzip ' stringData])
 
+    clearvars -except sub SUB subject_list folder TR Z MB sizeData FW NW T
+
 end
