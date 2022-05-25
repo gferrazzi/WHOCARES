@@ -17,13 +17,15 @@ load([folder 'subject_list.txt'])
 [SUB,~]=size(subject_list);
 
 %% PARAMETERS
-TR=0.72;       % repetition time
-Z=72;          % number of slices
-MB=8;          % multiband factor
-sizeData=1200; % number of volumes
-FW=0.2;        % width of the temporal filter (Hz)
-NW=20;         % number of frames per segment (in TRs). Note that the W parameter in the paper is NW*(Z/MB) = 180
-T=0;           % overlapping number of frames in successive segments, not tested, i.e. T=0 with no overlap
+TR=0.72;              % repetition time
+Z=72;                   % number of slices
+MB=8;                  % multiband factor
+sizeData=1200;   % number of volumes
+FW=0.2;               % width of the temporal filter (Hz)
+NW=20;                % number of frames per segment (in TRs). Note that the W parameter in the paper is NW*(Z/MB) = 180
+T=0;                      % overlapping number of frames in successive segments, not tested, i.e. T=0 with no overlap
+nregre = 8;           % number of regressors
+smoothing = 1.5; % spatial smoothing (in pixels)
 
 %% LOOP OVER SUBJECTS
 for sub = 1 : SUB
@@ -68,7 +70,7 @@ for sub = 1 : SUB
     bpm_iter = f_y(numWindows+1:2*numWindows);
     
     %% WHOCARES PIPELINE
-    [data_detrend, regressor] = WHOCARES_pipeline(stringData, stringMask, TR, MB, FW, NW, T, bpm_iter);
+    [data_detrend, regressor] = WHOCARES_pipeline(stringData, stringMask, TR, MB, FW, NW, T, bpm_iter, nregre, smoothing);
 
     data_detrend(isnan(data_detrend)) = 0;
     data_detrend(isinf(data_detrend)) = 0;
@@ -118,6 +120,6 @@ for sub = 1 : SUB
     system('gzip regressor.nii')
     system(['gzip ' stringData])
 
-    clearvars -except sub SUB subject_list folder TR Z MB sizeData FW NW T
+    clearvars -except sub SUB subject_list folder TR Z MB sizeData FW NW T nregre smoothing
 
 end

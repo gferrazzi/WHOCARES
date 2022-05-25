@@ -1,4 +1,4 @@
-function [data_detrend, regressor_output] = WHOCARES_pipeline( stringData, stringMask, TR, MB, FW, NW, T, bpm_iter)
+function [data_detrend, regressor_output] = WHOCARES_pipeline( stringData, stringMask, TR, MB, FW, NW, T, bpm_iter, nregre, smoothing)
 
 % Giulio Ferrazzi, December 2021
 % WHOCARES: Data-driven WHOle-brain CArdiac signal REgression from highly accelerated simultaneous multi-Slice fMRI acquisitions by Nigel Colenbier, Marco Marino, Giorgio Arcara, Blaise Frederick, Giovanni Pellegrino, Daniele Marinazzo, Giulio Ferrazzi - submitted manuscript
@@ -8,11 +8,13 @@ function [data_detrend, regressor_output] = WHOCARES_pipeline( stringData, strin
 %% INPUT
 % stringData = input fMRI path
 % stringMask = input mask path
-% TR         = repetition time
-% MB         = multiband factor
-% FW         = width of temporal filter  (in Hz)
-% NW         = segment length
+% TR              = repetition time
+% MB             = multiband factor
+% FW             = width of temporal filter  (in Hz)
+% NW            = segment length
 % bpm_iter   = average heart-rate per segment
+% nregre       = number of regressors
+% smoothing = spatial smoothing (in pixels)
 %% OUTPUT
 % data_detrend = pre-processed fMRI data
 % regressor_output = cardiac regressor
@@ -27,13 +29,13 @@ data_detrend = bsxfun(@times, data_detrend, mask);
 opol = 3;
 for x = 1 : X 
 for y = 1 : Y
-    for z = 1 : totZ
+   for z = 1 : totZ
         voxel = squeeze(data_detrend(x,y,z,:));
         [p,s,mu] = polyfit((1:NV)',voxel,opol);
         f_y = polyval(p,(1:NV)',[],mu);
         voxel = voxel-f_y+mean(voxel);
-        data_detrend(x,y,z,:) = reshape(voxel,[1 1 1 NV]);
-    end
+       data_detrend(x,y,z,:) = reshape(voxel,[1 1 1 NV]);
+   end
 end
 end
 
@@ -45,19 +47,38 @@ for mbpack = 1 : MB      % for each block of slices
 data_toProcess = data_detrend(:,:,(totZ/MB)*(mbpack-1)+1:(totZ/MB)*(mbpack),:);    % select block
 [~, ~, smallZ, ~] = size(data_toProcess);
 
-cardiac_regressor = zeros(X,Y,smallZ,NV,4);
+cardiac_regressor = zeros(X,Y,smallZ,NV,nregre);
 regressor = zeros(X,Y,smallZ,NV);   
 
 for iter = 1:numWindows      % for each segment W
 
     cardiac_freq = bpm_iter(iter)/60;     % average HR from happy
 
-    bandpassNS = [cardiac_freq-FW 2/TR-cardiac_freq-FW 2/TR+cardiac_freq-FW 4/TR-cardiac_freq-FW;        % cut-off frequencies of the filter
-       cardiac_freq+FW 2/TR-cardiac_freq+FW 2/TR+cardiac_freq+FW 4/TR-cardiac_freq+FW];
-
+    % calculating cardiac replica frequency position (equation 1)
+    bandpassNS = [];  
+    nr = 1;
+    counter = 1;
+    while counter <= nregre
+           
+          % left peak
+           toAppend = [((nr)*1/TR)-abs(cardiac_freq-1/TR)-FW 
+           ((nr)*1/TR)-abs(cardiac_freq-1/TR)+FW ];
+           bandpassNS = [bandpassNS toAppend];
+           counter = counter+1;
+           % right peak
+           toAppend = [((nr)*1/TR)+abs(cardiac_freq-1/TR)-FW 
+           ((nr)*1/TR)+abs(cardiac_freq-1/TR)+FW ];
+           bandpassNS = [bandpassNS toAppend];
+           nr = nr+1;
+           counter = counter+1;
+           
+    end
+    bandpassNS = bandpassNS(:,1:nregre);
+     
+    
     start = ((iter-1)*(NW-T)+1); stop = ((iter-1)*(NW-T)+NW);      % select segment within block
     data_window  = data_toProcess(:,:,:,start:stop);
-    data_smooth  = smooth_data_window(data_window,1);              % spatial smoothing
+    data_smooth  = smooth_data_window(data_window,smoothing);              % spatial smoothing
     data_smooth(isnan(data_smooth)) = 0;
    
     regressor_chunk = cardiac_extraction(data_smooth,TR,1,bandpassNS,mask(:,:,(totZ/MB)*(mbpack-1)+1:(totZ/MB)*(mbpack)));    % extract cardiac_frequencies
