@@ -35,4 +35,7 @@ for subject in $(cat $subjectlist);
         --legacyoutput \
         --cardcalconly
 
+    gunzip ${results_dir}/fmri_desc-stdrescardfromfmri_timeseries.tsv.gz
+    cut -f4  ${results_dir}/fmri_desc-stdrescardfromfmri_timeseries.tsv >  ${results_dir}/fmri_normcardfromfmri_dlfiltered_25.0Hz.txt
+
 done < $subjectlist
