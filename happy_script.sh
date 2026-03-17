@@ -32,7 +32,6 @@ for subject in $(cat $subjectlist);
         /slicetiming/slice_timing.txt \
         /output/fmri \
         --debug \
-        --legacyoutput \
         --cardcalconly
 
     gunzip ${results_dir}/fmri_desc-stdrescardfromfmri_timeseries.tsv.gz
