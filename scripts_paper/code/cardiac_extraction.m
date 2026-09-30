@@ -1,4 +1,4 @@
-function filter_nstandard = cardiac_extraction(data,TR,MB,bandpassNS,mask_brain)
+function filter_nstandard = cardiac_extraction(data,TR,MB,bandpassNS,mask_brain,sliceOrder)
 
 % Giulio Ferrazzi, December 2021
 % WHOCARES: Data-driven WHOle-brain CArdiac signal REgression from highly accelerated simultaneous multi-Slice fMRI acquisitions by Nigel Colenbier, Marco Marino, Giorgio Arcara, Blaise Frederick, Giovanni Pellegrino, Daniele Marinazzo, Giulio Ferrazzi - submitted manuscript
@@ -21,7 +21,6 @@ data = double(data);
 TS         = (TR/Z)*MB;            % time between two consecutive slices
 newT       = (Z/MB)*T;             % new reformatted time dimension
 newZ       = MB;                   % new reformatted slice dimension
-sliceOrder = [1:2:Z/MB 2:2:Z/MB];  % slice order within block B
 
 %% SETTING UP MASK
 if isempty(mask_brain)

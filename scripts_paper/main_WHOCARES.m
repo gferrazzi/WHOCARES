@@ -23,6 +23,7 @@ MB=8;                  % multiband factor
 sizeData=1200;   % number of volumes
 FW=0.2;               % width of the temporal filter (Hz)
 NW=20;                % number of frames per segment (in TRs). Note that the W parameter in the paper is NW*(Z/MB) = 180
+sliceOrder = [1:2:Z/MB 2:2:Z/MB];  % slice order within block B
 T=0;                      % overlapping number of frames in successive segments, not tested, i.e. T=0 with no overlap
 nregre = 8;           % number of regressors
 smoothing = 1.5; % spatial smoothing (in pixels)
@@ -70,7 +71,7 @@ for sub = 1 : SUB
     bpm_iter = f_y(numWindows+1:2*numWindows);
     
     %% WHOCARES PIPELINE
-    [data_detrend, regressor] = WHOCARES_pipeline(stringData, stringMask, TR, MB, FW, NW, T, bpm_iter, nregre, smoothing);
+    [data_detrend, regressor] = WHOCARES_pipeline(stringData, stringMask, TR, MB, FW, NW, T, bpm_iter, nregre, smoothing, sliceOrder);
 
     data_detrend(isnan(data_detrend)) = 0;
     data_detrend(isinf(data_detrend)) = 0;
