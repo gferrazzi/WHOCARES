@@ -1,4 +1,4 @@
-function [data_detrend, regressor_output] = WHOCARES_pipeline( stringData, stringMask, TR, MB, FW, NW, T, bpm_iter, nregre, smoothing)
+function [data_detrend, regressor_output] = WHOCARES_pipeline( stringData, stringMask, TR, MB, FW, NW, T, bpm_iter, nregre, smoothing, sliceOrder)
 
 % Giulio Ferrazzi, December 2021
 % WHOCARES: Data-driven WHOle-brain CArdiac signal REgression from highly accelerated simultaneous multi-Slice fMRI acquisitions by Nigel Colenbier, Marco Marino, Giorgio Arcara, Blaise Frederick, Giovanni Pellegrino, Daniele Marinazzo, Giulio Ferrazzi - submitted manuscript
@@ -81,7 +81,7 @@ for iter = 1:numWindows      % for each segment W
     data_smooth  = smooth_data_window(data_window,smoothing);              % spatial smoothing
     data_smooth(isnan(data_smooth)) = 0;
    
-    regressor_chunk = cardiac_extraction(data_smooth,TR,1,bandpassNS,mask(:,:,(totZ/MB)*(mbpack-1)+1:(totZ/MB)*(mbpack)));    % extract cardiac_frequencies
+    regressor_chunk = cardiac_extraction(data_smooth,TR,1,bandpassNS,mask(:,:,(totZ/MB)*(mbpack-1)+1:(totZ/MB)*(mbpack)), sliceOrder);    % extract cardiac_frequencies
 
     cardiac_regressor(:,:,:,start:stop,:) = regressor_chunk(:,:,:,1:(NW-T),:);    % compound data
 
